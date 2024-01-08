@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  labeled-nginx:
+    image: nginx
+    container_name: nginx1
+    restart: no
+    ports:
+      - "8080:80"
+    labels:
+      "traefik.http.routers.to-hello-world.rule": "Host(`hello.rive.st`)"
+
+  multiport-labeled-nginx:
+    image: nginx
+    container_name: nginx2
+    restart: no
+    ports:
+      - "8081:80"
+      - "8082:80"
+    labels:
+      "traefik.http.routers.to-hello-world1.rule": "Host(`hello1.rive.st`)"
+      "traefik.http.services.hello-world1.loadbalancer.server.port": 8081
+      "traefik.http.routers.to-hello-world2.rule": "Host(`hello2.rive.st`)"
+      "traefik.http.services.hello-world2.loadbalancer.server.port": 8082
+
+  unlabled-nginx:
+    image: nginx
+    container_name: nginx3
+    restart: no
+    ports:
+      - "8083:80"
